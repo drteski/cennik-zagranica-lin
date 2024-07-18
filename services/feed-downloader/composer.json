@@ -1,0 +1,8 @@
+{
+	"require": {
+		"ext-curl": "*",
+		"ext-simplexml": "*",
+		"ext-libxml": "*",
+		"ext-json": "*"
+	}
+}

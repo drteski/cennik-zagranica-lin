@@ -1,0 +1,54 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+.env
+.idea
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env*.local
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+/public/temp/data/aliases.json
+/public/temp/data/categories.json
+/public/temp/data/comparers.json
+/public/temp/data/producers.json
+/public/temp/data/product-1.json
+/public/temp/data/product-2.json
+/public/temp/data/product-3.json
+/public/temp/data/product-4.json
+/public/temp/data/product-5.json
+/public/temp/data/product-6.json
+/public/temp/data/product-7.json
+/public/temp/data/product-8.json
+/public/temp/data/profile_fields.json
+/public/temp/data/profile_fields_choices.json
+/public/temp/data/profiles.json
+/public/temp/data/tags.json
+/public/temp/data/tariff_strategies.json
+/public/temp/feed.xml
