@@ -1,9 +1,18 @@
 export const dynamic = "force-dynamic";
-import { password } from "@/lib/utils";
 import { NextResponse } from "next/server";
+import prisma from "@/db";
 
 export async function POST(request) {
   const { pass, lang } = await request.json();
-  const authorized = password(pass, lang);
+  const password = await prisma.password.findFirst({
+    where: {
+      country: {
+        is: {
+          iso: lang,
+        },
+      },
+    },
+  });
+  const authorized = password.password === pass;
   return NextResponse.json({ authorized });
 }

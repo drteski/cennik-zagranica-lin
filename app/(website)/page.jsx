@@ -1,4 +1,5 @@
 import Link from "next/link";
+import prisma from "@/db";
 
 const BasePage = async () => {
 	const countries = await prisma.country.findMany({});

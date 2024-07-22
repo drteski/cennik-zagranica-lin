@@ -1,5 +1,5 @@
 import prisma from "@/db";
-import { country, matchPath } from "@/lib/utils";
+import { matchPath } from "@/lib/utils";
 import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
 import Password from "@/components/Password";
@@ -23,6 +23,11 @@ export function CarbonChevronLeft(props) {
 
 const LangPage = async ({ params }) => {
 	if (await !matchPath(params.lang)) return notFound();
+	const country = await prisma.country.findFirst({
+		where: {
+			iso: params.lang,
+		},
+	});
 
 	const cookieStore = cookies();
 	const cookieLang = cookieStore.get("lang")?.value || "";
@@ -57,7 +62,7 @@ const LangPage = async ({ params }) => {
 				...product,
 				titles: product.titles.filter((title) => title.lang === params.lang),
 			}))
-			.map(async (prod, index) => {
+			.map(async (prod) => {
 				if (prod.titles.length === 0) return;
 				const { variantId, sku, ean, brand } = prod;
 				return {
@@ -102,7 +107,7 @@ const LangPage = async ({ params }) => {
 						Back
 					</Link>
 				</Button>
-				<h1 className="text-3xl uppercase font-bold">{country(params.lang)}</h1>
+				<h1 className="text-3xl uppercase font-bold">{country.name}</h1>
 			</div>
 			<DataTable
 				data={[...productWithPriceDifference, ...productWithoutPriceDifference]}
