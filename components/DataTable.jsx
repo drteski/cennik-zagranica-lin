@@ -27,10 +27,9 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import { currencyMapping } from "@/lib/utils";
 import { useState } from "react";
 
-export function DataTable({ data, brands, lang }) {
+export function DataTable({ data, brands, lang, country }) {
 	const [sorting, setSorting] = useState([]);
 	const [columnFilters, setColumnFilters] = useState([]);
 	const [columnVisibility, setColumnVisibility] = useState({});
@@ -132,9 +131,9 @@ export function DataTable({ data, brands, lang }) {
 
 				const setPrice = (item) => {
 					const { newPrice, oldPrice } = item;
-					const price = new Intl.NumberFormat(currencyMapping(lang).locale, {
+					const price = new Intl.NumberFormat(country.locale, {
 						style: "currency",
-						currency: currencyMapping(lang).currency,
+						currency: country.currency,
 					}).format(newPrice);
 
 					if (oldPrice !== 0) {
@@ -297,8 +296,8 @@ export function DataTable({ data, brands, lang }) {
 												? null
 												: flexRender(
 														header.column.columnDef.header,
-														header.getContext()
-												  )}
+														header.getContext(),
+													)}
 										</TableHead>
 									);
 								})}
@@ -317,7 +316,7 @@ export function DataTable({ data, brands, lang }) {
 										<TableCell key={cell.id}>
 											{flexRender(
 												cell.column.columnDef.cell,
-												cell.getContext()
+												cell.getContext(),
 											)}
 										</TableCell>
 									))}

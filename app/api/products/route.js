@@ -195,7 +195,7 @@ const processProducts = async (data) => {
       },
     });
     const existingProduct = await prisma.product.findFirst({ where: { productId: item.id } });
-    console.log(existingProduct);
+    // console.log(existingProduct);
     if (currentProductData !== null) {
       await prisma.productTitle.update({
         where: {

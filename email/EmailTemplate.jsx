@@ -1,17 +1,11 @@
 import { Html, Section, Text, Row, Column } from "jsx-email";
 import { format } from "date-fns";
-import prisma from "@/db";
 
-const EmailTemplate = async ({ data, lang }) => {
-	const country = await prisma.country.findFirst({
-		where: {
-			iso: lang,
-		},
-	});
+const EmailTemplate = ({ data, locale, name, currency }) => {
 	return (
 		<Html>
 			<Text>
-				Price Changes for {country.name} {format(new Date(), "dd-MM-yyyy")}
+				Price Changes for {name} {format(new Date(), "dd-MM-yyyy")}
 			</Text>
 			<Section>
 				<Row style={{ borderBottom: "1px solid black" }}>
@@ -127,9 +121,9 @@ const EmailTemplate = async ({ data, lang }) => {
 									width: "10%",
 								}}
 							>
-								{new Intl.NumberFormat(country.locale, {
+								{new Intl.NumberFormat(locale, {
 									style: "currency",
-									currency: country.currency,
+									currency: currency,
 								}).format(parseFloat(item.newPrice))}
 							</Column>
 						</Row>

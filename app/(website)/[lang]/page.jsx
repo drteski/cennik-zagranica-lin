@@ -113,6 +113,7 @@ const LangPage = async ({ params }) => {
 				data={[...productWithPriceDifference, ...productWithoutPriceDifference]}
 				brands={brands}
 				lang={params.lang}
+				country={country}
 			/>
 		</main>
 	);
