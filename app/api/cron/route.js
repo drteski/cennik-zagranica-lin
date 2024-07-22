@@ -1,24 +1,23 @@
+import { notifyClient } from "@/services/sendNotification";
+
+export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
-import prisma from "@/db";
-
-const axios = require("axios");
-
-// const cronJob = async () => {
-//   await axios
-//     .get("/api/products")
-//     .then((res) => console.log(res))
-//     .catch((e) => console.log(e));
-//   await axios
-//     .get("/api/mailing")
-//     .then((res) => console.log(res))
-//     .catch((e) => console.log(e));
-// };
-//
-// cronJob();
+import { config } from "@/config/config";
 
 export async function GET() {
-  const products = await prisma.productTitle.findMany();
-
-  await Promise.all(products.map(async (product) => await prisma.productTitle.delete({ where: { id: product.id } })));
-  return NextResponse.json({ message: "Zaktualizowano produkty." });
+  const data = config.translations.map(async (item) => {
+    const country = await prisma.country.findFirst({ where: { iso: item.iso } });
+    return await prisma.mailingList.create({
+      data: {
+        subject: item.subject,
+        country: {
+          connect: {
+            id: country.id,
+          },
+        },
+      },
+    });
+  });
+  await Promise.all(data);
+  return NextResponse.json({ messageSentTo: "poszło" });
 }

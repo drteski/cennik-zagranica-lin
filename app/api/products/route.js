@@ -1,4 +1,5 @@
 import { config } from "@/config/config";
+
 export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
 import fs from "fs";
@@ -194,7 +195,7 @@ const processProducts = async (data) => {
       },
     });
     const existingProduct = await prisma.product.findFirst({ where: { productId: item.id } });
-
+    console.log(existingProduct);
     if (currentProductData !== null) {
       await prisma.productTitle.update({
         where: {
@@ -218,8 +219,7 @@ const processProducts = async (data) => {
           priceDifference: 0,
           products: {
             connect: {
-              id: existingProduct.id,
-              // productId: item.id,
+              id: existingProduct.id, // productId: item.id,
             },
           },
         },
@@ -231,15 +231,15 @@ const processProducts = async (data) => {
 
   return console.log(`${insertedProducts.length} products processed\n${insertedPrices.length} prices processed`);
 };
-const processPrices = async (data) => {
-  const prices = data.map((product, index) => {
-    if (index === 0) console.log(product);
-    return;
-  });
-  const upsertData = prices.map(async (item) => {});
-  // const insertedData = await Promise.all(upsertData);
-  // return console.log(`${insertedData.length} products processed`);
-};
+// const processPrices = async (data) => {
+//   const prices = data.map((product, index) => {
+//     if (index === 0) console.log(product);
+//     return;
+//   });
+//   const upsertData = prices.map(async (item) => {});
+//   // const insertedData = await Promise.all(upsertData);
+//   // return console.log(`${insertedData.length} products processed`);
+// };
 
 export async function GET() {
   const files = fs.readdirSync(dataPath);
@@ -268,8 +268,8 @@ export async function GET() {
 
   await Promise.all(dataToProces);
 
-  // const filesToDelete = files.map(async (file) => await fs.unlink(`${dataPath}${file}`, (err) => console.log(err)));
-  // await Promise.all(filesToDelete);
+  const filesToDelete = files.map(async (file) => await fs.unlink(`${dataPath}${file}`, (err) => console.log(err)));
+  await Promise.all(filesToDelete);
 
   return NextResponse.json({ message: "Zaktualizowano produkty." });
 }

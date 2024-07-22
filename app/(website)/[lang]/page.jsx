@@ -20,8 +20,9 @@ export function CarbonChevronLeft(props) {
 		</svg>
 	);
 }
+
 const LangPage = async ({ params }) => {
-	if (!matchPath(params.lang)) return notFound();
+	if (await !matchPath(params.lang)) return notFound();
 
 	const cookieStore = cookies();
 	const cookieLang = cookieStore.get("lang")?.value || "";
@@ -58,13 +59,6 @@ const LangPage = async ({ params }) => {
 			}))
 			.map(async (prod, index) => {
 				if (prod.titles.length === 0) return;
-				// console.log(prod.titles[0]?.name);
-				// // if(prod.titles[0])
-				// const title = await prisma.productTitle.findMany({
-				// 	where: {
-				// 		id: prod.titles[0].id,
-				// 	},
-				// });
 				const { variantId, sku, ean, brand } = prod;
 				return {
 					variantId,
@@ -80,13 +74,13 @@ const LangPage = async ({ params }) => {
 					},
 				};
 			})
-			.filter(Boolean)
+			.filter(Boolean),
 	);
 	const productWithPriceDifference = preparedProducts
 		.filter(Boolean)
 		.filter(
 			(product) =>
-				product.price.priceDifference > 0 || (product.price.priceDifference < 0 && true)
+				product.price.priceDifference > 0 || (product.price.priceDifference < 0 && true),
 		);
 	const productWithoutPriceDifference = preparedProducts
 		.filter(Boolean)

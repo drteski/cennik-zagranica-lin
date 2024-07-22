@@ -6,3 +6,5 @@
 		"ext-json": "*"
 	}
 }
+
+sudo apt-get install php-curl php7.0-xml
