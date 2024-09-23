@@ -52,3 +52,4 @@ next-env.d.ts
 /public/temp/data/tags.json
 /public/temp/data/tariff_strategies.json
 /public/temp/feed.xml
+/services/feed-downloader/*.txt

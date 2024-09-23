@@ -1,8 +1,9 @@
 <?php
+# $url = 'https://files.lazienka-rea.com.pl/feed-small.xml';
 $url = 'https://lazienka-rea.com.pl/feed/generate/full_offer';
 $xmlDownloadLocation = '../../public/temp/';
 $jsonSaveLocation = '../../public/temp/data/';
-$productsPerFile = 1000;
+$productsPerFile = 100;
 
 
 function xmlToArray($xml, $options = array())
@@ -83,15 +84,37 @@ function xmlToArray($xml, $options = array())
 	);
 }
 
+;
 function fetchXml($url)
 {
+
+	echo 'Pobieranie XML';
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($ch, CURLOPT_TIMEOUT, 3600);
+
 	$output = curl_exec($ch);
 	curl_close($ch);
+
+	$files = glob('../../public/temp/data/*');
+	$feedFile = glob('../../public/temp/*');
+	foreach ($feedFile as $file) {
+		if (is_file($file)) {
+			unlink($file);
+
+		}
+	}
+	foreach ($files as $file) {
+		if (is_file($file)) {
+			unlink($file);
+
+		}
+	}
+	echo 'Pobrano XML';
 	return $output;
 }
+
 
 $xmlContent = fetchXml($url);
 
@@ -116,12 +139,12 @@ foreach ($arrayData as $data => $store) {
 			}
 			continue;
 		}
+		echo 'Zapisano ' . ' ' . $name . '\n';
 		file_put_contents($jsonSaveLocation . $name . '.json', json_encode($content, JSON_PRETTY_PRINT));
 
 	}
 }
+$today = date("Y-m-d_H-i-s");
+file_put_contents('log_' . $today . '.txt', '');
 
-
-?>
-
-
+echo 'Pobrano feed';
